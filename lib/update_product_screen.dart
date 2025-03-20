@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package:flutter/material.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
@@ -9,7 +10,8 @@ class UpdateProductScreen extends StatefulWidget {
   final String productId;
   final Map<String, dynamic> productData;
 
-  UpdateProductScreen({required this.productId, required this.productData});
+  const UpdateProductScreen(
+      {super.key, required this.productId, required this.productData});
 
   @override
   _UpdateProductScreenState createState() => _UpdateProductScreenState();
@@ -31,7 +33,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
         TextEditingController(text: widget.productData['idsanpham']);
     _categoryController =
         TextEditingController(text: widget.productData['loaisp']);
-    
+
     // Chuyển đổi giá thành chuỗi có dấu chấm (ví dụ: "1.200.000")
     _priceController = TextEditingController(
       text: NumberFormat("#,###", "vi_VN").format(widget.productData['gia']),
@@ -52,8 +54,8 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
   }
 
   Future<void> _pickImage() async {
-    final ImagePicker _picker = ImagePicker();
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
 
     if (image != null) {
       final bytes = await image.readAsBytes();
@@ -62,17 +64,15 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
       });
     }
   }
-
   void _updateProduct() async {
     if (_formKey.currentState!.validate()) {
       try {
-        // Loại bỏ dấu chấm và chuyển thành int trước khi lưu vào Firestore
         int gia = int.parse(_priceController.text.replaceAll(".", ""));
 
         await _firestore.collection('products').doc(widget.productId).update({
           'idsanpham': _idController.text,
           'loaisp': _categoryController.text,
-          'gia': gia, // Đảm bảo kiểu int
+          'gia': gia,
           'hinhanh': _imageBytes != null
               ? base64Encode(_imageBytes!)
               : widget.productData['hinhanh'],
@@ -150,9 +150,9 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                 children: [
                   TextFormField(
                     controller: _idController,
-                    decoration: InputDecoration(labelText: "Mã sản phẩm *"),
+                    decoration: InputDecoration(labelText: "Tên sản phẩm *"),
                     validator: (value) =>
-                        value!.isEmpty ? "Vui lòng nhập mã sản phẩm" : null,
+                        value!.isEmpty ? "Vui lòng nhập tên sản phẩm" : null,
                   ),
                   SizedBox(height: 10),
                   TextFormField(
@@ -171,13 +171,15 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                     onChanged: (value) {
                       setState(() {
                         // Tự động định dạng giá tiền khi nhập
-                        String cleaned = value.replaceAll(RegExp(r'[^0-9]'), '');
+                        String cleaned =
+                            value.replaceAll(RegExp(r'[^0-9]'), '');
                         if (cleaned.isNotEmpty) {
                           _priceController.text =
                               NumberFormat("#,###", "vi_VN").format(
                             int.parse(cleaned),
                           );
-                          _priceController.selection = TextSelection.fromPosition(
+                          _priceController.selection =
+                              TextSelection.fromPosition(
                             TextPosition(offset: _priceController.text.length),
                           );
                         }

@@ -18,7 +18,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   bool _showPassword = false;
   bool _showConfirmPassword = false;
-  bool _isLoading = false; 
+  bool _isLoading = false;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -38,10 +38,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         User? user = userCredential.user;
 
         if (user != null) {
-          
-          _isLoading  = false;
+          _isLoading = false;
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Registration Successful!")),
+            SnackBar(content: Text("Đăng ký thành công!")),
           );
 
           Navigator.pushReplacement(
@@ -50,17 +49,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
           );
         }
       } on FirebaseAuthException catch (e) {
-        String errorMessage = "Registration failed";
+        String errorMessage = "Đăng ký không thành công";
         if (e.code == 'email-already-in-use') {
           errorMessage = "Email is already in use";
         } else if (e.code == 'weak-password') {
-          errorMessage = "Password should be at least 6 characters";
+          errorMessage = "Mật khẩu phải có ít nhất 6 ký tự";
         }
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(errorMessage)),
         );
-      } 
+      }
     }
   }
 
@@ -78,13 +77,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "REGISTER",
+                    "ĐĂNG KÝ",
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Register',
+                      Text('Đăng ký',
                           style: TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.blue)),
                       SizedBox(width: 20),
@@ -96,13 +95,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 builder: (context) => LoginScreen()),
                           );
                         },
-                        child:
-                            Text('Login', style: TextStyle(color: Colors.grey)),
+                        child: Text('Đăng nhập',
+                            style: TextStyle(color: Colors.grey)),
                       ),
                     ],
                   ),
                   SizedBox(height: 8),
-                  Text("Create a new account",
+                  Text("Tạo tài khoản mới",
                       style: TextStyle(color: Colors.grey)),
                   SizedBox(height: 16),
 
@@ -110,13 +109,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   TextFormField(
                     controller: _nameController,
                     decoration: InputDecoration(
-                      labelText: 'Full Name',
+                      labelText: 'Họ và tên',
                       prefixIcon: Icon(Icons.person),
                       border: OutlineInputBorder(),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter your name';
+                        return 'Vui lòng nhập tên của bạn';
                       }
                       return null;
                     },
@@ -127,17 +126,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   TextFormField(
                     controller: _emailController,
                     decoration: InputDecoration(
-                      labelText: 'Email Address',
+                      labelText: 'Địa chỉ Email',
                       prefixIcon: Icon(Icons.email),
                       border: OutlineInputBorder(),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter your email';
+                        return 'Vui lòng nhập email của bạn';
                       } else if (!RegExp(
                               r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
                           .hasMatch(value)) {
-                        return 'Please enter a valid email';
+                        return 'Vui lòng nhập email hợp lệ';
                       }
                       return null;
                     },
@@ -149,7 +148,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     controller: _passwordController,
                     obscureText: !_showPassword,
                     decoration: InputDecoration(
-                      labelText: 'Password',
+                      labelText: 'Mật khẩu',
                       prefixIcon: Icon(Icons.lock),
                       suffixIcon: IconButton(
                         icon: Icon(_showPassword
@@ -165,9 +164,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter a password';
+                        return 'Vui lòng nhập mật khẩu';
                       } else if (value.length < 6) {
-                        return 'Password must be at least 6 characters';
+                        return 'Mật khẩu phải có ít nhất 6 ký tự';
                       }
                       return null;
                     },
@@ -179,7 +178,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     controller: _confirmPasswordController,
                     obscureText: !_showConfirmPassword,
                     decoration: InputDecoration(
-                      labelText: 'Confirm Password',
+                      labelText: 'Xác nhận mật khẩu',
                       prefixIcon: Icon(Icons.lock),
                       suffixIcon: IconButton(
                         icon: Icon(_showConfirmPassword
@@ -195,9 +194,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please confirm your password';
+                        return 'Vui lòng xác nhận mật khẩu của bạn';
                       } else if (value != _passwordController.text) {
-                        return 'Passwords do not match';
+                        return 'Mật khẩu không khớp';
                       }
                       return null;
                     },
@@ -214,7 +213,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             backgroundColor: Colors.blue,
                           ),
                           child: Text(
-                            "Register",
+                            "Đăng ký",
                             style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
                         ),
