@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "394843781111",
+    "firebase_url": "https://flutter-midterm-bc46a-default-rtdb.firebaseio.com",
+    "project_id": "flutter-midterm-bc46a",
+    "storage_bucket": "flutter-midterm-bc46a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:394843781111:android:243c920def621f7bcaa0f2",
+        "android_client_info": {
+          "package_name": "com.example.dnt_midterm"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVmz7kEEHPzpQx6Y2hchuLmMIei_Bvrlw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
