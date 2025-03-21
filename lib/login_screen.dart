@@ -1,9 +1,12 @@
-import 'package:flutter/material.dart';
-import 'register_screen.dart';
-import 'product_list_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+
+import 'product_list_screen.dart';
+import 'register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -12,7 +15,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  bool _rememberMe = false;
+
   bool _showpass = true;
 
   void _login() async {
@@ -26,23 +29,19 @@ class _LoginScreenState extends State<LoginScreen> {
           email: email,
           password: password,
         );
-
-        // Nếu đăng nhập thành công
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Login Successful!")),
+          SnackBar(content: Text("Đăng nhập thành công!")),
         );
-
-        // Điều hướng sang trang danh sách sản phẩm
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => ProductListScreen()),
         );
       } on FirebaseAuthException catch (e) {
-        String errorMessage = "Login failed!";
+        String errorMessage = "Đăng nhập không thành công!";
         if (e.code == 'user-not-found') {
-          errorMessage = "No user found for that email.";
+          errorMessage = "Không tìm thấy người dùng.";
         } else if (e.code == 'wrong-password') {
-          errorMessage = "Wrong password provided for that user.";
+          errorMessage = "Mật khẩu không đúng.";
         }
 
         ScaffoldMessenger.of(context).showSnackBar(
@@ -70,14 +69,14 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text('LOGIN',
+                  Text('ĐĂNG NHẬP',
                       style:
                           TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                   SizedBox(height: 5),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Login',
+                      Text('Đăng nhập',
                           style: TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.blue)),
                       SizedBox(width: 20),
@@ -90,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           );
                         },
                         child: Text(
-                          'Register',
+                          'Đăng ký',
                           style: TextStyle(color: Colors.grey),
                         ),
                       ),
@@ -105,19 +104,20 @@ class _LoginScreenState extends State<LoginScreen> {
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
                           decoration: InputDecoration(
-                            labelText: 'Email Address',
+                            labelText: 'Địa chỉ Email',
                             prefixIcon: Icon(Icons.email),
                             border: OutlineInputBorder(),
                           ),
-                          validator: (value) =>
-                              value!.isEmpty ? 'Please enter your email' : null,
+                          validator: (value) => value!.isEmpty
+                              ? 'Vui lòng nhập email của bạn'
+                              : null,
                         ),
                         SizedBox(height: 16),
                         TextFormField(
                           controller: _passwordController,
                           obscureText: _showpass,
                           decoration: InputDecoration(
-                            labelText: 'Password',
+                            labelText: 'Mật khẩu',
                             prefixIcon: Icon(Icons.lock),
                             suffixIcon: IconButton(
                                 icon: Icon(_showpass
@@ -131,19 +131,19 @@ class _LoginScreenState extends State<LoginScreen> {
                             border: OutlineInputBorder(),
                           ),
                           validator: (value) => value!.length < 6
-                              ? 'Please enter your password'
+                              ? 'Vui lòng nhập mật khẩu của bạn'
                               : null,
                         ),
                         SizedBox(height: 20),
                         ElevatedButton(
                           onPressed: _login,
-                          child: Text('Login',
-                              style:
-                                  TextStyle(fontSize: 16, color: Colors.white)),
                           style: ElevatedButton.styleFrom(
                             minimumSize: Size(double.infinity, 50),
                             backgroundColor: Colors.blue,
                           ),
+                          child: Text('Đăng nhập',
+                              style:
+                                  TextStyle(fontSize: 16, color: Colors.white)),
                         ),
                       ],
                     ),

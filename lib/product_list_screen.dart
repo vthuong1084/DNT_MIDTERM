@@ -1,13 +1,17 @@
-import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'login_screen.dart';
-import 'add_product_screen.dart';
-import 'update_product_screen.dart';
-import 'package:intl/intl.dart';
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+import 'add_product_screen.dart';
+import 'login_screen.dart';
+import 'update_product_screen.dart';
+
 class ProductListScreen extends StatefulWidget {
+  const ProductListScreen({super.key});
+
   @override
   _ProductListScreenState createState() => _ProductListScreenState();
 }
@@ -60,14 +64,14 @@ class _ProductListScreenState extends State<ProductListScreen> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context); // Đóng hộp thoại
+                Navigator.pop(context);
               },
               child: Text("Hủy"),
             ),
             TextButton(
               onPressed: () {
-                Navigator.pop(context); // Đóng hộp thoại
-                _deleteProduct(docId); // Gọi hàm xóa sản phẩm
+                Navigator.pop(context);
+                _deleteProduct(docId);
               },
               child: Text("Xóa", style: TextStyle(color: Colors.red)),
             ),
@@ -76,7 +80,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
       },
     );
   }
-
   void _deleteProduct(String docId) async {
     try {
       await _firestore.collection('products').doc(docId).delete();
@@ -152,10 +155,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
           SizedBox(height: 5),
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
-              stream: _firestore
-                  .collection('products')
-                  .orderBy('createdAt', descending: true)
-                  .snapshots(),
+              stream: _firestore.collection('products').snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
@@ -209,7 +209,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                               : Icon(Icons.image, size: 50, color: Colors.grey),
                         ),
                         title: Text(
-                          data["idsanpham"] ?? "Không có mã SP",
+                          data["idsanpham"] ?? "Không có SP",
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold),
                         ),
