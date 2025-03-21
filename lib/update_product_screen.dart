@@ -34,7 +34,6 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
     _categoryController =
         TextEditingController(text: widget.productData['loaisp']);
 
-    // Chuyển đổi giá thành chuỗi có dấu chấm (ví dụ: "1.200.000")
     _priceController = TextEditingController(
       text: NumberFormat("#,###", "vi_VN").format(widget.productData['gia']),
     );
@@ -64,6 +63,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
       });
     }
   }
+
   void _updateProduct() async {
     if (_formKey.currentState!.validate()) {
       try {
@@ -76,7 +76,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
           'hinhanh': _imageBytes != null
               ? base64Encode(_imageBytes!)
               : widget.productData['hinhanh'],
-          'updatedAt': FieldValue.serverTimestamp(),
+          // 'updatedAt': FieldValue.serverTimestamp(),
         });
 
         ScaffoldMessenger.of(context).showSnackBar(
